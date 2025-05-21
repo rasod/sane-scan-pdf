@@ -63,7 +63,7 @@ IMAGE_FILE=$(basename $1)
 
 TIMEVERBOSE=
 if [[ $VERBOSE == 1 ]]; then
-  TIMEVERBOSE=\time
+  TIMEVERBOSE=time
 fi
 
 process_page() {

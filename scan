@@ -34,6 +34,7 @@ VERBOSE=0
 SKIP_EMPTY_PAGES=0
 WHITE_THRESHOLD=99.8
 BRIGHTNESS_CONTRAST=
+DETECT_ROTATED_PAGES=0
 SOURCE=""
 SOURCE_DUPLEX="ADF Duplex"
 OPENSCAN=0
@@ -138,6 +139,8 @@ while [[ $# > 0 ]]; do
   --no-searchable|--no-ocr) SEARCHABLE=0 ;;
 
   --language) shift; LANGUAGE=$1 ;;
+  
+  --detect-rotated-pages) DETECT_ROTATED_PAGES=1 ;;
 
   --skip-empty-pages) SKIP_EMPTY_PAGES=1 ;;
 
@@ -221,6 +224,8 @@ if [[ $HELP == 1 ]]; then
   echo "   remove empty pages from resulting PDF document (e.g. one sided doc in duplex mode)"
   echo " --white-threshold"
   echo "   threshold to identify an empty page is a percentage value between 0 and 100. The default is 99.8"
+  echo " --detected-roated-images"
+  echo "   use teseract to determine if image was scanned rotated 180 degrees and correct"
   echo " --brightness-contrast-sw"
   echo "   Alter brightness and contrast via post-processing - prefer specifying brightness and/or"
   echo "   contrast via --driver-options if supported by your hardware."
@@ -393,6 +398,7 @@ export PGWIDTHIN
 export PGHEIGHTIN
 export PS2PDF_OPTS
 export SKIP_EMPTY_PAGES
+export DETECT_ROTATED_PAGES
 export WHITE_THRESHOLD
 export BRIGHTNESS_CONTRAST
 

@@ -15,6 +15,7 @@ usage()
   echo "  PGHEIGHTIN"
   echo "  SKIP_EMPTY_PAGES"
   echo "  BRIGHTNESS_CONTRAST"
+  echo "  DETECT_ROTATED_PAGES"
   echo "  PS2PDF_OPTS (optional)"
   echo "  VERBOSE (optional)"
   echo "  LOCKFILE (required if VERBOSE=1)"
@@ -51,7 +52,7 @@ if [[ $# < 1 ]]; then
   exit 1
 fi
 
-if [[ "$UNPAPER" == "" || "$SEARCHABLE" == "" || "$RESOLUTION" == "" || "$RESOLUTION" == "" || "$SKIP_EMPTY_PAGES" == "" ]]; then
+if [[ "$UNPAPER" == "" || "$SEARCHABLE" == "" || "$RESOLUTION" == "" || "$RESOLUTION" == "" || "$SKIP_EMPTY_PAGES" == "" || "$DETECT_ROTATED_PAGES" == "" ]]; then
   usage
   exit 1
 fi
@@ -62,7 +63,7 @@ IMAGE_FILE=$(basename $1)
 
 TIMEVERBOSE=
 if [[ $VERBOSE == 1 ]]; then
-  TIMEVERBOSE=time
+  TIMEVERBOSE=\time
 fi
 
 process_page() {
@@ -72,8 +73,13 @@ process_page() {
   log "-------------------------------------------------------------------------------"
 
   if [[ "$BRIGHTNESS_CONTRAST" != "" ]]; then
-	log "Adjust brightness and contrast in ImageMagick by $BRIGHTNESS_CONTRAST"
+  log "Adjust brightness and contrast in ImageMagick by $BRIGHTNESS_CONTRAST"
     convert "$IMAGE_PATH" -brightness-contrast $BRIGHTNESS_CONTRAST "$IMAGE_PATH"
+  fi
+
+  if [[ $DETECT_ROTATED_PAGES == 1 && $(tesseract $IMAGE_PATH stdout --psm 0 -c min_orientation_margin=1 2>/dev/null | grep 'Orientation in degrees' | awk '{print $4}') == 180 ]]; then
+      log "Detected Rotated Page - Rotating 180 degrees..."
+      convert "$IMAGE_PATH" -rotate "180" "$IMAGE_PATH"	
   fi
 
   if [[ $SKIP_EMPTY_PAGES == 1 ]]; then

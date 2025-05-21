@@ -16,6 +16,7 @@ Tested and run regularly on Fedora, but should work on other distributions with 
 * Specify resolution
 * Truncate n pages explicitly from end of scan e.g. duplex scanning with last page truncated
 * Skip white-only pages automatically (with ImageMagick)
+* Detect rotated pages (with tesseract) 
 * Specify page width and height for odd size pages, or common sizes (Letter, Legal, A4)
 * Performance: scanner run in parallel with page post-processing
 * Limit parallel processing for very fast scanners or constrained environments (if sem installed)
@@ -38,7 +39,7 @@ Installation](https://github.com/rocketraman/sane-scan-pdf/wiki/Dependencies-Ins
 
 * unpaper (for software deskew)
 * flock (usually provided by util-linux) (for properly ordered verbose logs)
-* tesseract (to make searchable PDFs)
+* tesseract (to make searchable PDFs, detect rotated pages)
 * sem (via gnu-parallels, to constrain resource usage during page processing -- install this if you have a fast scanner)
 * bc (for whitepage detection percentage calculations)
 * xdg-open (for opening scan after completion)
@@ -96,6 +97,8 @@ OPTIONS
  --brightness-contrast-sw
    Alter brightness and contrast via post-processing - prefer specifying brightness and/or
    contrast via --driver-options if supported by your hardware.
+--detected-roated-images (requires tesseract)
+   use teseract to determine if image was scanned rotated 180 degrees and correct
  --open
    After scanning, open the scan via xdg-open
  -og, --option-group

@@ -97,7 +97,7 @@ OPTIONS
  --brightness-contrast-sw
    Alter brightness and contrast via post-processing - prefer specifying brightness and/or
    contrast via --driver-options if supported by your hardware.
---detected-roated-images (requires tesseract)
+ --detected-roated-images (requires tesseract)
    use teseract to determine if image was scanned rotated 180 degrees and correct
  --open
    After scanning, open the scan via xdg-open
